@@ -1,11 +1,9 @@
 #include <WiFi.h>
 #include <PubSubClient.h>
 #include <Arduino.h>
+#include <WiFiManager.h> 
 
 #define USE_SERIAL Serial
-
-const char* ssid = "PENIA323";
-const char* password = "nope";
 
 const char* mqtt_broker = "192.168.100.11";
 const char* topic_be = "sensors/temperature";
@@ -14,6 +12,7 @@ const char* mqtt_password = "test";
 const int mqtt_port = 1883;
 
 const int pin22 = 22;    // the number of the LED pin
+
 
 WiFiClient espClient;
 PubSubClient client(espClient);
@@ -52,16 +51,24 @@ void reconnect() {
 
 void setup() {
   Serial.begin(115200);
-  WiFi.begin(ssid, password);
+  WiFiManager wifiManager;
   pinMode(pin22, OUTPUT);
+  wifiManager.setDebugOutput(true);
 
-  Serial.print("Connecting to WiFi");
-  while (WiFi.status() != WL_CONNECTED) {
+  // Uncomment to reset settings
+  wifiManager.resetSettings();
+
+  // Set timeout to 180 seconds (3 minutes)
+  wifiManager.setTimeout(180);
+
+  if (!wifiManager.autoConnect("ESP32_AP")) {
     digitalWrite(pin22, HIGH);
-    delay(500);
-    Serial.print(".");
+    Serial.println("Failed to connect and hit timeout");
+    ESP.restart();
+    delay(1000);
     digitalWrite(pin22, LOW);
   }
+
   digitalWrite(pin22, HIGH);
   Serial.println();
   Serial.println("Connected to WiFi");
