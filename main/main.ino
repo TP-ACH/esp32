@@ -2,47 +2,12 @@
 #include <PubSubClient.h>
 #include <Arduino.h>
 #include <WiFiManager.h> 
+#include <cleverleafy.h>
 
 #define USE_SERIAL Serial
 
-const char* mqtt_broker = "192.168.100.11";
-const char* topics[] = {
-  "sensors/lights",
-  "sensors/acid",
-  "sensors/base",
-  "sensors/water",
-  "sensors/nutes"
-};
-const char* topic_temperature = "sensors/temperature";
-const char* topic_ph = "sensors/ph";
-const char* topic_ec = "sensors/ec";
-const char* topic_humidity = "sensors/humidity";
-const char* topic_room_temperature = "sensors/room_temperature";
-const char* topic_floater = "sensors/floater";
-
-const char* mqtt_username = "test";
-const char* mqtt_password = "test";
-const int mqtt_port = 1883;
-
-const int pin22 = 22;    // the number of the LED pin
-
-// input pins
-const int p_temperature = 12;
-const int p_room_temperature = 14;
-const int p_pH = 27;
-const int p_ec = 26;
-const int p_humidity = 25;
-const int p_floater = 23;
-
-// output pins
-const int p_lights = 21;
-const int p_acid = 19;
-const int p_base = 18;
-const int p_water = 4;
-const int p_nutes = 2;
 
 String client_id = "esp32-client-";
-
 
 WiFiClient espClient;
 PubSubClient client(espClient);
@@ -94,8 +59,16 @@ void callback(char *topic, byte *payload, unsigned int length) {
   Serial.println();
   Serial.println("--------");
   digitalWrite(pin22, LOW);
-
-  // switch (topic) callback por cada topico
+  
+  switch (from(topic)) {
+    case TOPIC_WATER: {
+      digitalWrite(p_water, HIGH);
+      delay(3000);
+      digitalWrite(p_water, LOW);
+      break;
+    }
+    default: {}
+  }
 }
 
 void setup() {
@@ -129,8 +102,8 @@ void setup() {
   client.setServer(mqtt_broker, mqtt_port);
   client.setCallback(callback);
   reconnect();
-  for (int i = 0; i < sizeof(topics)/sizeof(topics[0]); i++) {
-    client.subscribe(topics[i]);
+  for (int i = 0; i < sizeof(topics_to_sub)/sizeof(topics_to_sub[0]); i++) {
+    client.subscribe(topics_to_sub[i]);
   }
   input_pins();
   output_pins();
@@ -139,7 +112,7 @@ void setup() {
 void publish(int value, const char* topic) {
   delay(1000);
   char msg[200];
-  snprintf(msg, 200, "{\n\"device_id\": \"%s\", \n\"value\": \"%d\"\n}", client_id.c_str(), value);
+  snprintf(msg, 200, "{\n\"device_id\": \"%s\", \n\"reading\": \"%d\"\n}", client_id.c_str(), value);
   char print_msg[100];
   snprintf(print_msg, 100, "--- publishing message in topic %s ---", topic);
   Serial.println(print_msg);
@@ -160,7 +133,7 @@ void analog_read() {
   // int humidity = analogRead(p_humidity);
   // publish(humidity, topic_humidity);
   int floater = digitalRead(p_floater);
-  publish(floater, topic_floater);
+  publish(floater, getTopicString(TOPIC_FLOATER));
 }
 
 unsigned long last_receive_time = 0;
