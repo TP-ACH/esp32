@@ -1,7 +1,10 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
-char* topics[] = {
+#include <Arduino.h>
+#define USE_SERIAL Serial
+
+char* topics_to_sub[] = {
   "sensors/lights",
   "sensors/acid",
   "sensors/base",
