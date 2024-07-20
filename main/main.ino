@@ -13,6 +13,7 @@ boolean receiving = true;  // Flag to indicate receiving state
 void setup() {
   Serial.begin(115200);  // Initialize serial communication
   wifi_client.setup_wifi();
+  delay(1000);
   mqtt_client.setup_mqtt(String(WiFi.macAddress()));
   input_pins();
   output_pins();
