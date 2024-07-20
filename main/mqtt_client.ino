@@ -44,7 +44,7 @@ void callback(char *topic, byte *payload, unsigned int length) {
     }
 }
 
-void MQTTClient::setup_mqtt(PubSubClient client, String mac_address) {
+void MQTTClient::setup_mqtt(String mac_address) {
     client.setServer(mqtt_broker, mqtt_port);
     client.setCallback(callback);
     MQTTClient::reconnect(mac_address);
