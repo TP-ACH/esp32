@@ -3,6 +3,9 @@
 
 #include "constants.h"
 #include "topic.h"
+#include "wifi_client.h"
+#include "mqtt_client.h"
+#include <Arduino.h>
 
 void input_pins();
 void output_pins();
