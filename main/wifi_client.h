@@ -5,18 +5,13 @@
 #include <WiFiManager.h>
 #include "constants.h"
 
-
 class MyWiFiClient {
 public:
-    // Constructor
-    MyWiFiClient(WiFiClient client);
-
-    // Public methods
-
+    MyWiFiClient(WiFiClient espClient);
+    void setup_wifi();
 
 private:
     WiFiClient wifi;
-    void setup_wifi(WiFiClient wifi);
 };
 
-#endif 
+#endif // WIFI_CLIENT_H

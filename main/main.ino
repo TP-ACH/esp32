@@ -3,7 +3,7 @@
 WiFiClient espClient;
 PubSubClient client(espClient);
 MyWiFiClient wifi_client(espClient);
-MQTTClient mqtt_client(client, String(WiFi.macAddress()));
+MQTTClient mqtt_client(client);
 
 unsigned long last_receive_time = 0;
 unsigned long last_publish_time = 0;
@@ -11,9 +11,11 @@ const unsigned long receive_interval = 10000; // 10 seconds
 boolean receiving = true;  // Flag to indicate receiving state
 
 void setup() {
+  Serial.begin(115200);  // Initialize serial communication
+  wifi_client.setup_wifi();
+  mqtt_client.setup_mqtt(String(WiFi.macAddress()));
   input_pins();
   output_pins();
-  Serial.begin(115200);  // Initialize serial communication
 }
 
 void analog_read() {
