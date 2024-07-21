@@ -2,8 +2,8 @@
 
 WiFiClient espClient;
 PubSubClient client(espClient);
-MyWiFiClient wifi_client(espClient);
-MQTTClient mqtt_client(client);
+MyWiFiClient wifi_client(&espClient);
+MQTTClient mqtt_client(&client);
 
 unsigned long last_receive_time = 0;
 unsigned long last_publish_time = 0;

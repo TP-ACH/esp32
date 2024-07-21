@@ -1,6 +1,6 @@
 #include "wifi_client.h"
 
-MyWiFiClient::MyWiFiClient(WiFiClient espClient) : wifi(espClient) {
+MyWiFiClient::MyWiFiClient(WiFiClient *espClient) : wifi(espClient) {
 }
 
 void MyWiFiClient::setup_wifi() {

@@ -1,21 +1,21 @@
 #include "mqtt_client.h"
 
-MQTTClient::MQTTClient(PubSubClient pubsub) : client(pubsub) {
+MQTTClient::MQTTClient(PubSubClient *pubsub) : client(pubsub) {
 }
 
 void MQTTClient::reconnect(String mac_address) {
-    while (!client.connected()) {
+    while (!(*client).connected()) {
         digitalWrite(pin22, HIGH);
         client_id = "esp32-client-";
         client_id += mac_address;
 
         Serial.printf("The client %s connects to the MQTT broker\n", client_id.c_str());
-        if (client.connect(client_id.c_str(), mqtt_username, mqtt_password)) {
+        if ((*client).connect(client_id.c_str(), mqtt_username, mqtt_password)) {
             Serial.println("MQTT broker connected");
             digitalWrite(pin22, LOW);
         } else {
             Serial.print("Failed with state ");
-            Serial.println(client.state());
+            Serial.println((*client).state());
             delay(2000);
         }
     }
@@ -45,12 +45,12 @@ void callback(char *topic, byte *payload, unsigned int length) {
 }
 
 void MQTTClient::setup_mqtt(String mac_address) {
-    client.setServer(mqtt_broker, mqtt_port);
-    client.setCallback(callback);
+    (*client).setServer(mqtt_broker, mqtt_port);
+    (*client).setCallback(callback);
     MQTTClient::reconnect(mac_address);
 
     for (int i = 0; i < sizeof(topics_to_sub)/sizeof(topics_to_sub[0]); i++) {
-        client.subscribe(topics_to_sub[i]);
+        (*client).subscribe(topics_to_sub[i]);
     }
 }
 
@@ -62,6 +62,6 @@ void MQTTClient::publish(const char* topic, int value) {
     snprintf(print_msg, 100, "--- publishing message in topic %s ---", topic);
     Serial.println(print_msg);
     Serial.println(msg);
-    client.publish(topic, msg, 1);
+    (*client).publish(topic, msg, 1);
     delay(1000);  // Consider replacing this with a non-blocking delay
 }

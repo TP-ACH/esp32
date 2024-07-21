@@ -7,11 +7,11 @@
 
 class MyWiFiClient {
 public:
-    MyWiFiClient(WiFiClient espClient);
+    MyWiFiClient(WiFiClient *espClient);
     void setup_wifi();
 
 private:
-    WiFiClient wifi;
+    WiFiClient *wifi;
 };
 
 #endif // WIFI_CLIENT_H

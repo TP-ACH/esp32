@@ -6,13 +6,13 @@
 
 class MQTTClient {
 public:
-    MQTTClient(PubSubClient pubsub);
+    MQTTClient(PubSubClient *pubsub);
     void reconnect(String mac_address);
     void publish(const char* topic, int value);
     void setup_mqtt(String mac_address);
 
 private:
-    PubSubClient client;
+    PubSubClient *client;
     String client_id;
 };
 
