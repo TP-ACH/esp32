@@ -5,11 +5,11 @@
 #define USE_SERIAL Serial
 
 char* topics_to_sub[] = {
-  "sensors/lights",
-  "sensors/acid",
-  "sensors/base",
-  "sensors/water",
-  "sensors/nutes"
+  "actuators/light",
+  "actuators/pumps/ph_down",
+  "actuators/pumps/ph_up",
+  "actuators/pumps/water",
+  "actuators/pumps/nutrient"
 };
 
 
