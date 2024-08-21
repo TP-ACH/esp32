@@ -54,10 +54,10 @@ void MQTTClient::setup_mqtt(String mac_address) {
     }
 }
 
-void MQTTClient::publish(const char* topic, int value) {
+void MQTTClient::publish(const char* topic, float value) {
     delay(1000);  // Consider replacing this with a non-blocking delay
     char msg[200];
-    snprintf(msg, 200, "{\n\"device_id\": \"%s\", \n\"reading\": \"%d\"\n}", client_id.c_str(), value);
+    snprintf(msg, 200, "{\n\"device_id\": \"%s\", \n\"reading\": \"%f\"\n}", client_id.c_str(), value);
     char print_msg[100];
     snprintf(print_msg, 100, "--- publishing message in topic %s ---", topic);
     Serial.println(print_msg);

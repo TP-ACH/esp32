@@ -30,12 +30,12 @@ void analog_read() {
   // mqtt_client.publish(getTopicString(TOPIC_ROOM_TEMPERATURE), room_temperature);
   // int pH = analogRead(p_pH);
   // mqtt_client.publish(getTopicString(TOPIC_PH), pH);
-  float ec = tds_helper.analog_read(25.0);
+  float ec = tds_helper.analog_read(20.0);
   mqtt_client.publish(getTopicString(TOPIC_EC), ec);
   // int humidity = analogRead(p_humidity);
   // mqtt_client.publish(getTopicString(TOPIC_HUMIDITY), humidity);
-  int floater = digitalRead(p_floater);
-  mqtt_client.publish(getTopicString(TOPIC_FLOATER), floater);
+  // int floater = digitalRead(p_floater);
+  // mqtt_client.publish(getTopicString(TOPIC_FLOATER), floater);
 }
 
 void loop() {
