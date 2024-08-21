@@ -1,9 +1,11 @@
 #include <cleverleafy.h>
 
 WiFiClient espClient;
+GravityTDS tds;
 PubSubClient client(espClient);
 MyWiFiClient wifi_client(&espClient);
 MQTTClient mqtt_client(&client);
+TDSHelper tds_helper(&tds);
 
 unsigned long last_receive_time = 0;
 unsigned long last_publish_time = 0;
@@ -17,6 +19,7 @@ void setup() {
   mqtt_client.setup_mqtt(String(WiFi.macAddress()));
   input_pins();
   output_pins();
+  tds_helper.setup_tds();
 }
 
 void analog_read() {
@@ -27,8 +30,8 @@ void analog_read() {
   // mqtt_client.publish(getTopicString(TOPIC_ROOM_TEMPERATURE), room_temperature);
   // int pH = analogRead(p_pH);
   // mqtt_client.publish(getTopicString(TOPIC_PH), pH);
-  // int ec = analogRead(p_ec);
-  // mqtt_client.publish(getTopicString(TOPIC_EC), ec);
+  float ec = tds_helper.analog_read(25.0);
+  mqtt_client.publish(getTopicString(TOPIC_EC), ec);
   // int humidity = analogRead(p_humidity);
   // mqtt_client.publish(getTopicString(TOPIC_HUMIDITY), humidity);
   int floater = digitalRead(p_floater);

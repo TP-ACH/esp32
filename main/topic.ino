@@ -3,7 +3,7 @@
 #include <string.h>
 
 // Define an array of strings corresponding to the topics
-const char* all_topics[TOPIC_COUNT] = {
+const char* all_topics[TOPIC_COUNT-1] = {
     "actuators/light",
     "actuators/pumps/ph_down",
     "actuators/pumps/ph_up",
@@ -18,7 +18,7 @@ const char* all_topics[TOPIC_COUNT] = {
 };
 
 const char* getTopicString(Topic topic) {
-    if (topic >= 0 && topic < TOPIC_COUNT) {
+    if (topic >= 0 && topic < (TOPIC_COUNT-1)) {
         return all_topics[topic];
     }
     return "";
