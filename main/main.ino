@@ -1,10 +1,7 @@
-#include <cleverleafy.h>
+#include "cleverleafy.h"
 
-WiFiClient espClient;
+WiFiAndMQTTClient wifi_mqtt_client;
 GravityTDS tds;
-PubSubClient client(espClient);
-MyWiFiClient wifi_client(&espClient);
-MQTTClient mqtt_client(&client);
 TDSHelper tds_helper(&tds);
 
 unsigned long last_receive_time = 0;
@@ -14,9 +11,9 @@ boolean receiving = true;  // Flag to indicate receiving state
 
 void setup() {
   Serial.begin(115200);  // Initialize serial communication
-  wifi_client.setup_wifi();
+  wifi_mqtt_client.setup();
   delay(1000);
-  mqtt_client.setup_mqtt(String(WiFi.macAddress()));
+  //mqtt_client.setup_mqtt(String(WiFi.macAddress()));
   input_pins();
   output_pins();
   tds_helper.setup_tds();
@@ -31,7 +28,7 @@ void analog_read() {
   // int pH = analogRead(p_pH);
   // mqtt_client.publish(getTopicString(TOPIC_PH), pH);
   float ec = tds_helper.analog_read(20.0);
-  mqtt_client.publish(getTopicString(TOPIC_EC), ec);
+  wifi_mqtt_client.publish(getTopicString(TOPIC_EC), ec);
   // int humidity = analogRead(p_humidity);
   // mqtt_client.publish(getTopicString(TOPIC_HUMIDITY), humidity);
   // int floater = digitalRead(p_floater);
@@ -39,10 +36,7 @@ void analog_read() {
 }
 
 void loop() {
-  if (!client.connected()) {
-    mqtt_client.reconnect(String(WiFi.macAddress()));
-  }
-  client.loop();
+  wifi_mqtt_client.loop();
 
   unsigned long currentMillis = millis();
 

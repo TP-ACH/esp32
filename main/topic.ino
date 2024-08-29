@@ -1,6 +1,4 @@
-#include <constants.h>
-#include <cleverleafy.h>
-#include <string.h>
+#include "topic.h"
 
 // Define an array of strings corresponding to the topics
 const char* all_topics[TOPIC_COUNT-1] = {
