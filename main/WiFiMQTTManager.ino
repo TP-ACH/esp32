@@ -66,7 +66,6 @@ void WiFiMQTTManager::setup() {
   Serial.println(clientId);
 
   _setupSpiffs();
-  //set config save notify callback
   wm -> setSaveConfigCallback([&]{
     Serial.println("WMM: should save config...");
     _shouldSaveConfig = true;
@@ -76,13 +75,11 @@ void WiFiMQTTManager::setup() {
   WiFiManagerParameter custom_friendly_name("name", "Friendly Name", _friendly_name, 40);
   WiFiManagerParameter custom_mqtt_server("server", "MQTT Server", _mqtt_server, 40);
   WiFiManagerParameter custom_mqtt_port("port", "MQTT Port", _mqtt_port, 6);
-  //WiFiManagerParameter custom_mqtt_username("username", "mqtt username", _mqtt_username, 40);
-  //WiFiManagerParameter custom_mqtt_password("password", "mqtt password", _mqtt_password, 40);
+  // add mqtt_username and mqtt_password for MQTT authentication
   wm -> addParameter( & custom_friendly_name);
   wm -> addParameter( & custom_mqtt_server);
   wm -> addParameter( & custom_mqtt_port);
-  // wm-> addParameter(&custom_mqtt_username);
-  // wm-> addParameter(&custom_mqtt_password);
+  // add mqtt_username and mqtt_password for MQTT authentication
 
   wm -> setAPCallback([ & ](WiFiManager * myWiFiManager) {
     Serial.println("WMM: entering config mode...");
@@ -106,8 +103,7 @@ void WiFiMQTTManager::setup() {
   strcpy(_friendly_name, custom_friendly_name.getValue());
   strcpy(_mqtt_server, custom_mqtt_server.getValue());
   strcpy(_mqtt_port, custom_mqtt_port.getValue());
-  //strcpy(_mqtt_username, custom_mqtt_username.getValue());
-  //strcpy(_mqtt_password, custom_mqtt_password.getValue());
+  // add mqtt_username and mqtt_password for MQTT authentication
 
   //save the custom parameters to FS
   if (_shouldSaveConfig) {
@@ -116,8 +112,7 @@ void WiFiMQTTManager::setup() {
     doc["friendly_name"] = _friendly_name;
     doc["mqtt_server"] = _mqtt_server;
     doc["mqtt_port"] = _mqtt_port;
-    //doc["mqtt_username"] = _mqtt_username;
-    //doc["mqtt_password"] = _mqtt_password;
+    // add mqtt_username and mqtt_password for MQTT authentication
     serializeJson(doc, Serial);
 
     File configFile = SPIFFS.open("/config.json", "w");
@@ -167,7 +162,6 @@ void WiFiMQTTManager::setup() {
 void WiFiMQTTManager::_setupSpiffs() {
   if (formatFS == true) {
     Serial.print("WMM: formatting FS...please wait..... ");
-    //clean FS, for testing
     SPIFFS.format();
   }
 
@@ -177,7 +171,6 @@ void WiFiMQTTManager::_setupSpiffs() {
   if (SPIFFS.begin()) {
     Serial.println("WMM: mounted file system...");
     if (SPIFFS.exists("/config.json")) {
-      //file exists, reading and loading
       Serial.println("WMM: reading config file...");
       File configFile = SPIFFS.open("/config.json", "r");
       if (configFile) {
@@ -194,8 +187,7 @@ void WiFiMQTTManager::_setupSpiffs() {
           strcpy(_friendly_name, doc["friendly_name"]);
           strcpy(_mqtt_server, doc["mqtt_server"]);
           strcpy(_mqtt_port, doc["mqtt_port"]);
-          //strcpy(_mqtt_username, doc["mqtt_username"]);
-          //strcpy(_mqtt_password, doc["mqtt_password"]);
+         // add mqtt_username and mqtt_password for MQTT authentication
         } else {
           Serial.println("WMM: failed to load json config...");
         }
@@ -211,13 +203,12 @@ void WiFiMQTTManager::_setupSpiffs() {
 }
 
 void WiFiMQTTManager::_checkButton() {
-  // check for button press
   if (digitalRead(_resetPin) == LOW) {
     // TOOD validar uso de reset
     delay(50);
     if (digitalRead(_resetPin) == LOW) {
       Serial.println("WMM: button Pressed...");
-      delay(3000); // reset delay hold
+      delay(3000); 
       if (digitalRead(_resetPin) == LOW) {
         Serial.println("WMM: button held...");
         Serial.println("WMM: erasing config, restarting...");
@@ -233,11 +224,8 @@ void WiFiMQTTManager::_checkButton() {
 }
 
 void WiFiMQTTManager::_reconnect() {
-  // Loop until we're reconnected
   while (!client -> connected()) {
     Serial.print("WMM: attempting MQTT connection...");
-    // Attempt to connect
-
     if (client -> connect(clientId) == true) {
       Serial.println("mqtt connected...via reconnect loop...");
       subscribeTo();
@@ -298,7 +286,6 @@ void WiFiMQTTManager::_subscribeToServices() {
 }
 
 void _settingsAP() {
-  // start portal w delay
   Serial.println("WMM: starting config portal...");
 
   wm -> resetSettings();
@@ -326,7 +313,6 @@ void _subscriptionCallback(char * topicIn, byte * message, unsigned int length) 
   if (messageTemp == "format FS") {
     Serial.println("FORMATTING FS NOW!!!!");
     Serial.print("WMM: formatting FS...please wait..... ");
-    //clean FS, for testing
     SPIFFS.format();
     ESP.restart();
   }
