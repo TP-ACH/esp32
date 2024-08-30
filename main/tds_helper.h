@@ -3,7 +3,6 @@
 
 #include "constants.h"
 
-
 /***************************************************
  DFRobot Gravity: Analog TDS Sensor/Meter
  <https://www.dfrobot.com/wiki/index.php/Gravity:_Analog_TDS_Sensor_/_Meter_For_Arduino_SKU:_SEN0244>
