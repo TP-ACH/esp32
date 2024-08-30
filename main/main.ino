@@ -15,7 +15,6 @@ void setup() {
   Serial.begin(115200);  // Initialize serial communication
   wifi_mqtt_client.setup();
   delay(1000);
-  //mqtt_client.setup_mqtt(String(WiFi.macAddress()));
   input_pins();
   output_pins();
   tds_helper.setup_tds();

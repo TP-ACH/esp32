@@ -20,7 +20,6 @@ WiFiMQTTManager::WiFiMQTTManager(int resetPin, const char * APpassword) {
   _lastMsg = 0;
   _value = 0;
   _shouldSaveConfig = false;
-  //byte* message;
 
   Serial.begin(115200);
   void _placeholderSubscibeTo();
@@ -113,20 +112,13 @@ void WiFiMQTTManager::setup() {
   //save the custom parameters to FS
   if (_shouldSaveConfig) {
     Serial.println("WMM: saving config...");
-    //* DynamicJsonBuffer jsonBuffer;
     JsonDocument doc;
-    //* JsonObject& json = jsonBuffer.createObject();
-    //doc["key"] = "value";
-    //doc["raw"] = serialized("[1,2,3]");
     doc["friendly_name"] = _friendly_name;
     doc["mqtt_server"] = _mqtt_server;
     doc["mqtt_port"] = _mqtt_port;
+    //doc["mqtt_username"] = _mqtt_username;
+    //doc["mqtt_password"] = _mqtt_password;
     serializeJson(doc, Serial);
-    //json["friendly_name"] = _friendly_name;
-    //json["mqtt_server"] = _mqtt_server;
-    //json["mqtt_port"] = _mqtt_port;
-    //json["mqtt_username"] = _mqtt_username;
-    //json["mqtt_password"] = _mqtt_password;
 
     File configFile = SPIFFS.open("/config.json", "w");
     if (!configFile) {
@@ -194,29 +186,16 @@ void WiFiMQTTManager::_setupSpiffs() {
         // Allocate a buffer to store contents of the file.
         std::unique_ptr < char[] > buf(new char[size]);
         configFile.readBytes(buf.get(), size);
-        //DynamicJsonBuffer jsonBuffer;
-        //JsonDocument jsonBuffer;
         JsonDocument doc;
-        // DeserializationError error = deserializeJson(doc, json);
-        // if (error)
-        // return;
-        // int value = doc["value"];
-        // JsonObject& json = jsonBuffer.parseObject(buf.get());
-        //DeserializationError error = deserializeJson(jsonBuffer, buf.get());
         DeserializationError error = deserializeJson(doc, buf.get());
-        // json.printTo(Serial);
         serializeJson(doc, Serial);
-        // if (json.success()) {
         if (!error) {
           Serial.println("\nWMM: parsed json...");
-          // strcpy(_friendly_name, json["friendly_name"]);
           strcpy(_friendly_name, doc["friendly_name"]);
-          // strcpy(_mqtt_server, json["mqtt_server"]);
           strcpy(_mqtt_server, doc["mqtt_server"]);
-          //* strcpy(_mqtt_port, json["mqtt_port"]);
           strcpy(_mqtt_port, doc["mqtt_port"]);
-          //strcpy(_mqtt_username, json["mqtt_username"]);
-          //strcpy(_mqtt_password, json["mqtt_password"]);
+          //strcpy(_mqtt_username, doc["mqtt_username"]);
+          //strcpy(_mqtt_password, doc["mqtt_password"]);
         } else {
           Serial.println("WMM: failed to load json config...");
         }
@@ -234,11 +213,10 @@ void WiFiMQTTManager::_setupSpiffs() {
 void WiFiMQTTManager::_checkButton() {
   // check for button press
   if (digitalRead(_resetPin) == LOW) {
-    // poor mans debounce/press-hold, code not ideal for production
+    // TOOD validar uso de reset
     delay(50);
     if (digitalRead(_resetPin) == LOW) {
       Serial.println("WMM: button Pressed...");
-      // still holding button for 3000 ms, reset settings, code not ideal for production
       delay(3000); // reset delay hold
       if (digitalRead(_resetPin) == LOW) {
         Serial.println("WMM: button held...");
@@ -262,17 +240,14 @@ void WiFiMQTTManager::_reconnect() {
 
     if (client -> connect(clientId) == true) {
       Serial.println("mqtt connected...via reconnect loop...");
-      // Subscribe
       subscribeTo();
       _subscribeToServices();
       client -> setCallback(subscriptionCallback);
-      //client->subscribe("switch/esp1234/led1/output");
     } else {
       Serial.print("mqtt connect failed, rc=");
       Serial.print(client -> state());
       Serial.println(" try again in 5 seconds...");
       _checkButton();
-      // Wait 5 seconds before retrying
       delay(5000);
     }
   }
@@ -283,34 +258,22 @@ void WiFiMQTTManager::setDebugOutput(bool b) {
 
 void WiFiMQTTManager::_registerDevice() {
 
-  //* StaticJsonBuffer<2000> JSONbuffer;
   JsonDocument doc;
-  //* JsonObject& root = JSONbuffer.createObject();
-  // JsonObject& root = doc.createObject();
-  //Serial.println(WiFi.macAddress());
 
-  //* root["time"] = 1351824120;
-  // doc["time"] = 1351824120;
-  //* root["deviceType"] = deviceType;
+
   doc["deviceType"] = deviceType;
-  //* root["deviceId"] = deviceId;
   doc["deviceId"] = deviceId;
-  //* root["name"] = _friendly_name;
   doc["name"] = _friendly_name;
-  //* root["chipId"] = chipId;
   doc["chipId"] = chipId;
-  //* root["sketchName"] = _sketchName;
 
   char topic[200];
   char messageBuffer[2000];
   snprintf(topic, sizeof(topic), "%s%s", "deviceLog/", deviceId);
 
-  //* root.printTo(messageBuffer, sizeof(messageBuffer));
   serializeJson(doc, Serial);
 
   Serial.print("Sending message to MQTT topic: ");
   Serial.println(topic);
-  //* root.prettyPrintTo(Serial);
   serializeJson(doc, Serial);
   Serial.println();
   Serial.print("messageBuffer: ");
@@ -344,7 +307,6 @@ void _settingsAP() {
 }
 
 void _subscriptionCallback(char * topicIn, byte * message, unsigned int length) {
-  //Serial.println("WMM: _subscriptionCallback called...");
   Serial.print("WMM: Message arrived on topic: ");
   Serial.print(topicIn);
   Serial.print(". Message: ");

@@ -48,22 +48,7 @@ void WiFiAndMQTTClient::setup() {
     
     wifiManager.subscribeTo = subcribe;
     wifiManager.client -> setCallback(callback);
-
-    // if (!wifiManager.autoConnect("ESP32_AP")) {
-    //     digitalWrite(pin22, HIGH);
-    //     Serial.println("Failed to connect and hit timeout");
-    //     ESP.restart();
-    //     delay(1000);
-    //     digitalWrite(pin22, LOW);
-    // }
-
-    // digitalWrite(pin22, HIGH);
-    // Serial.println();
-    // Serial.println("Connected to WiFi");
-    // Serial.print("IP Address: ");
-    // Serial.println(WiFi.localIP());
-    // delay(200);
-    // digitalWrite(pin22, LOW);
+    
 }
 
 void WiFiAndMQTTClient::loop() {

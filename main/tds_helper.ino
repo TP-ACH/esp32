@@ -106,5 +106,5 @@ float GravityTDS::getEcValue()
 
 void GravityTDS::readKValues()
 {
-    this->kValue = 0.57;  //calibrate in the  buffer solution, such as 400ppm@20^c
+    this->kValue = 0.57;  //calibrated in the  buffer solution, 400ppm@20^c
 }
