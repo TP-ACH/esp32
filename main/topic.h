@@ -1,6 +1,7 @@
 #ifndef TOPIC_H
 #define TOPIC_H
 
+#include <string.h>
 
 // topic_enum
 enum Topic {
