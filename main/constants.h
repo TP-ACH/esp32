@@ -15,10 +15,10 @@ const char* topics_to_sub[] = {
 
 // input pins
 const int p_temperature = 12;
-const int p_room_temperature = 14;
+const int p_scl = 22;
 const int p_pH = 27;
 const int p_ec = 35;
-const int p_humidity = 25;
+const int p_sda = 21;
 const int p_floater = 23;
 const int p_reset = 0;
 
@@ -26,7 +26,7 @@ const int p_reset = 0;
 const int p_lights = 2;
 const int p_acid = 19;
 const int p_base = 26;
-const int p_water = 21;
+const int p_water = 32;
 const int p_nutes = 18;
 
 
