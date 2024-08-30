@@ -6,7 +6,7 @@ MyWiFiClient::MyWiFiClient(WiFiClient *espClient) : wifi(espClient) {
 void MyWiFiClient::setup_wifi() {
     pinMode(pin22, OUTPUT);
     WiFiManager wifiManager;
-    wifiManager.setDebugOutput(true);
+    // wifiManager.setDebugOutput(true);
 
     // Uncomment to reset settings
     // wifiManager.resetSettings();

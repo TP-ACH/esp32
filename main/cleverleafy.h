@@ -5,6 +5,7 @@
 #include "topic.h"
 #include "wifi_client.h"
 #include "mqtt_client.h"
+#include "tds_helper.h"
 #include <Arduino.h>
 
 void input_pins();
