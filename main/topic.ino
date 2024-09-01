@@ -17,6 +17,8 @@ const char* all_topics[TOPIC_COUNT-1] = {
 
 const char* getTopicString(Topic topic) {
     if (topic >= 0 && topic < (TOPIC_COUNT-1)) {
+        Serial.print("Topic: ");
+        Serial.println(all_topics[topic]);
         return all_topics[topic - 1];
     }
     return "";
