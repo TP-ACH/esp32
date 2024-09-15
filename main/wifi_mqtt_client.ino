@@ -1,7 +1,6 @@
 #include "wifi_mqtt_client.h"
 
 void callback(char *topic, byte *payload, unsigned int length) {
-    digitalWrite(pin22, HIGH);
     Serial.print("Message arrived in topic: ");
     Serial.println(topic);
     Serial.print("Message: ");
@@ -10,13 +9,38 @@ void callback(char *topic, byte *payload, unsigned int length) {
     }
     Serial.println();
     Serial.println("--------");
-    digitalWrite(pin22, LOW);
-    
+
     switch (from(topic)) {
         case TOPIC_WATER: {
             digitalWrite(p_water, HIGH);
             delay(3000);
             digitalWrite(p_water, LOW);
+            break;
+        }
+        case TOPIC_NUTES: {
+            digitalWrite(p_nutes, HIGH);
+            delay(3000);
+            digitalWrite(p_nutes, LOW);
+            break;
+        }
+        case TOPIC_ACID: {
+            digitalWrite(p_acid, HIGH);
+            delay(200);
+            digitalWrite(p_acid, LOW);
+            break;
+        }
+        case TOPIC_BASE: {
+            digitalWrite(p_base, HIGH);
+            delay(200);
+            digitalWrite(p_base, LOW);
+            break;
+        }
+        case TOPIC_LIGHT_ON: {
+            digitalWrite(p_lights, HIGH);
+            break;
+        }
+        case TOPIC_LIGHT_OFF: {
+            digitalWrite(p_lights, LOW);
             break;
         }
         default: {}
@@ -45,9 +69,12 @@ void WiFiAndMQTTClient::setup() {
     // Attempt to connect to WiFi
     wifiManager.setup();
     client_id = wifiManager.clientId;
-    
+    Serial.println("Setting up MQTT client...");
     wifiManager.subscribeTo = subcribe;
+    Serial.println("Setting up callback...");
     wifiManager.client -> setCallback(callback);
+    Serial.println("Subscribing to topics...");
+    subcribe();
     
 }
 

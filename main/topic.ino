@@ -1,13 +1,13 @@
 #include "topic.h"
 
 // Define an array of strings corresponding to the topics
-const char* all_topics[TOPIC_COUNT-1] = {
-    "actuators/light",
+const char* all_topics[TOPIC_COUNT] = {
+    "actuators/light_on",
+    "actuators/light_off",
     "actuators/pumps/ph_down",
     "actuators/pumps/ph_up",
     "actuators/pumps/water",
-    "actuators/pumps/nutrient"
-    "sensors/temperature",
+    "actuators/pumps/nutrient",
     "sensors/ph",
     "sensors/ec",
     "sensors/humidity",
@@ -16,10 +16,10 @@ const char* all_topics[TOPIC_COUNT-1] = {
 };
 
 const char* getTopicString(Topic topic) {
-    if (topic >= 0 && topic < (TOPIC_COUNT-1)) {
+    if (topic >= 0 && topic < TOPIC_COUNT) {
         Serial.print("Topic: ");
         Serial.println(all_topics[topic]);
-        return all_topics[topic - 1];
+        return all_topics[topic];
     }
     return "";
 }
@@ -30,5 +30,5 @@ Topic from(const char* topic) {
             return static_cast<Topic>(i);
         }
     }
-    return TOPIC_UNKNOWN;
+    return TOPIC_COUNT; // never gets here
 }

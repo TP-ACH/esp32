@@ -38,10 +38,10 @@ GravityTDS::GravityTDS()
 {
     this->pin = 2;
     this->temperature = 25.0;
-    this->aref = 5.0;
-    this->adcRange = 1024.0;
+    this->aref = 3.3;
+    this->adcRange = 4096.0;
     this->kValueAddress = 8;
-    this->kValue = 1.0;
+    this->kValue = 1.7;
 }
 
 GravityTDS::~GravityTDS()
