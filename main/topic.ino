@@ -2,7 +2,8 @@
 
 // Define an array of strings corresponding to the topics
 const char* all_topics[TOPIC_COUNT] = {
-    "actuators/light",
+    "actuators/light_on",
+    "actuators/light_off",
     "actuators/pumps/ph_down",
     "actuators/pumps/ph_up",
     "actuators/pumps/water",

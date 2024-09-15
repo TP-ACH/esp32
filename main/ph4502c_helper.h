@@ -32,17 +32,14 @@ public:
           _reading_count(reading_count), _adc_resolution(adc_resolution), 
           _slope(slope) {}
 
-    void init(int p_temp, int p_ph);
+    void init(int p_ph);
 
     void recalibrate(float calibration);
 
     float read_ph_level();
 
-    int read_temp();
-
 private:
-    uint16_t _ph_level_pin;           ///< The analog pin connected to the pH level sensor.
-    uint16_t _temp_pin;              ///< The analog pin connected to the temperature sensor.
+    int _ph_level_pin;           ///< The analog pin connected to the pH level sensor.
     int _reading_interval;           ///< The interval between pH readings in milliseconds.
     int _reading_count;              ///< The number of readings to average.
     float _calibration;             ///< The pH calibration value.
