@@ -5,6 +5,7 @@ GravityTDS tds;
 TDSHelper tds_helper(&tds);
 AHTxx aht10(AHTXX_ADDRESS_X38, AHT1x_SENSOR); //sensor address, sensor type
 AHT10Helper aht10_helper(&aht10);
+pH4502cHelper ph4502c_helper;
 
 unsigned long last_receive_time = 0;
 unsigned long last_publish_time = 0;
@@ -19,16 +20,17 @@ void setup() {
   output_pins();
   tds_helper.setup_tds();
   aht10_helper.setup_aht10(p_sda, p_scl);
+  ph4502c_helper.init(p_temperature, p_pH);
 }
 
 void analog_read() {
-  // int temperature = analogRead(p_temperature);
-  // mqtt_client.publish(getTopicString(TOPIC_TEMPERATURE), temperature);
+  float temperature = ph4502c_helper.read_temp();
+  wifi_mqtt_client.publish(getTopicString(TOPIC_TEMPERATURE), temperature);
+  float pH = ph4502c_helper.read_ph_level();
+  wifi_mqtt_client.publish(getTopicString(TOPIC_PH), pH);
   float room_temperature = aht10_helper.read_temperature();
   wifi_mqtt_client.publish(getTopicString(TOPIC_ROOM_TEMPERATURE), room_temperature);
-  // int pH = analogRead(p_pH);
-  // mqtt_client.publish(getTopicString(TOPIC_PH), pH);
-  float ec = tds_helper.analog_read(20.0);
+  float ec = tds_helper.analog_read(temperature);
   wifi_mqtt_client.publish(getTopicString(TOPIC_EC), ec);
   float humidity = aht10_helper.read_humidity();
   wifi_mqtt_client.publish(getTopicString(TOPIC_HUMIDITY), humidity);

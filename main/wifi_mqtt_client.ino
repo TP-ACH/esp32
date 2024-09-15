@@ -1,7 +1,6 @@
 #include "wifi_mqtt_client.h"
 
 void callback(char *topic, byte *payload, unsigned int length) {
-    digitalWrite(pin22, HIGH);
     Serial.print("Message arrived in topic: ");
     Serial.println(topic);
     Serial.print("Message: ");
@@ -10,8 +9,7 @@ void callback(char *topic, byte *payload, unsigned int length) {
     }
     Serial.println();
     Serial.println("--------");
-    digitalWrite(pin22, LOW);
-    
+
     switch (from(topic)) {
         case TOPIC_WATER: {
             digitalWrite(p_water, HIGH);

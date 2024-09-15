@@ -16,7 +16,6 @@ enum Topic {
     TOPIC_HUMIDITY,
     TOPIC_ROOM_TEMPERATURE,
     TOPIC_FLOATER,
-    TOPIC_UNKNOWN,
     TOPIC_COUNT // This will be the number of topics
 };
 
