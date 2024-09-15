@@ -5,7 +5,8 @@
 #define USE_SERIAL Serial
 
 const char* topics_to_sub[] = {
-  "actuators/light",
+  "actuators/light_on",
+  "actuators/light_off",
   "actuators/pumps/ph_down",
   "actuators/pumps/ph_up",
   "actuators/pumps/water",
