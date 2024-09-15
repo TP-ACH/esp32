@@ -5,7 +5,8 @@
 
 // topic_enum
 enum Topic {
-    TOPIC_LIGHTS,
+    TOPIC_LIGHT_ON,
+    TOPIC_LIGHT_OFF,
     TOPIC_ACID,
     TOPIC_BASE,
     TOPIC_WATER,

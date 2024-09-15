@@ -20,17 +20,17 @@ void setup() {
   output_pins();
   tds_helper.setup_tds();
   aht10_helper.setup_aht10(p_sda, p_scl);
-  ph4502c_helper.init(p_temperature, p_pH);
+  ph4502c_helper.init(p_pH);
 }
 
 void analog_read() {
-  float temperature = ph4502c_helper.read_temp();
-  wifi_mqtt_client.publish(getTopicString(TOPIC_TEMPERATURE), temperature);
+  //float temperature = ph4502c_helper.read_temp();
+  //wifi_mqtt_client.publish(getTopicString(TOPIC_TEMPERATURE), temperature);
   float pH = ph4502c_helper.read_ph_level();
   wifi_mqtt_client.publish(getTopicString(TOPIC_PH), pH);
   float room_temperature = aht10_helper.read_temperature();
   wifi_mqtt_client.publish(getTopicString(TOPIC_ROOM_TEMPERATURE), room_temperature);
-  float ec = tds_helper.analog_read(temperature);
+  float ec = tds_helper.analog_read(room_temperature); // change room temperature for water temperature
   wifi_mqtt_client.publish(getTopicString(TOPIC_EC), ec);
   float humidity = aht10_helper.read_humidity();
   wifi_mqtt_client.publish(getTopicString(TOPIC_HUMIDITY), humidity);

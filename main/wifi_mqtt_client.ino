@@ -17,6 +17,32 @@ void callback(char *topic, byte *payload, unsigned int length) {
             digitalWrite(p_water, LOW);
             break;
         }
+        case TOPIC_NUTES: {
+            digitalWrite(p_nutes, HIGH);
+            delay(3000);
+            digitalWrite(p_nutes, LOW);
+            break;
+        }
+        case TOPIC_ACID: {
+            digitalWrite(p_acid, HIGH);
+            delay(200);
+            digitalWrite(p_acid, LOW);
+            break;
+        }
+        case TOPIC_BASE: {
+            digitalWrite(p_base, HIGH);
+            delay(200);
+            digitalWrite(p_base, LOW);
+            break;
+        }
+        case TOPIC_LIGHT_ON: {
+            digitalWrite(p_light, HIGH);
+            break;
+        }
+        case TOPIC_LIGHT_OFF: {
+            digitalWrite(p_light, LOW);
+            break;
+        }
         default: {}
     }
 }
