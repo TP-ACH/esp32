@@ -1,7 +1,6 @@
 #include "cleverleafy.h"
 
 void input_pins() {
-  pinMode(p_temperature, INPUT);
   pinMode(p_sda, INPUT);
   pinMode(p_pH, INPUT);
   pinMode(p_ec, INPUT);

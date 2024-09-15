@@ -9,8 +9,6 @@ pH4502cHelper ph4502c_helper;
 
 unsigned long last_receive_time = 0;
 unsigned long last_publish_time = 0;
-const unsigned long receive_interval = 10000; // 10 seconds
-boolean receiving = true;  // Flag to indicate receiving state
 
 void setup() {
   Serial.begin(115200);  // Initialize serial communication
@@ -24,13 +22,11 @@ void setup() {
 }
 
 void analog_read() {
-  //float temperature = ph4502c_helper.read_temp();
-  //wifi_mqtt_client.publish(getTopicString(TOPIC_TEMPERATURE), temperature);
   float pH = ph4502c_helper.read_ph_level();
   wifi_mqtt_client.publish(getTopicString(TOPIC_PH), pH);
   float room_temperature = aht10_helper.read_temperature();
   wifi_mqtt_client.publish(getTopicString(TOPIC_ROOM_TEMPERATURE), room_temperature);
-  float ec = tds_helper.analog_read(room_temperature); // change room temperature for water temperature
+  float ec = tds_helper.analog_read(room_temperature);
   wifi_mqtt_client.publish(getTopicString(TOPIC_EC), ec);
   float humidity = aht10_helper.read_humidity();
   wifi_mqtt_client.publish(getTopicString(TOPIC_HUMIDITY), humidity);
@@ -40,21 +36,6 @@ void analog_read() {
 
 void loop() {
   wifi_mqtt_client.loop();
-
-  unsigned long currentMillis = millis();
-
-  if (receiving) {
-    // Check if it's time to receive messages
-    if (currentMillis - last_receive_time >= receive_interval) {
-      last_receive_time = currentMillis;
-      // Switch to publishing mode after receiving for 10 seconds
-      receiving = false;
-      Serial.println("Switching to publishing mode");
-    }
-  } else {
-    // Publish sensor readings
-    analog_read();
-    receiving = true;
-    Serial.println("Switching to receiving mode");
-  }
+  analog_read();
+  delay(1000);
 }

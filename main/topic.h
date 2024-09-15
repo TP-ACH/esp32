@@ -11,7 +11,6 @@ enum Topic {
     TOPIC_BASE,
     TOPIC_WATER,
     TOPIC_NUTES,
-    TOPIC_TEMPERATURE,
     TOPIC_PH,
     TOPIC_EC,
     TOPIC_HUMIDITY,

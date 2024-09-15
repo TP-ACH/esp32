@@ -69,9 +69,12 @@ void WiFiAndMQTTClient::setup() {
     // Attempt to connect to WiFi
     wifiManager.setup();
     client_id = wifiManager.clientId;
-    
+    Serial.println("Setting up MQTT client...");
     wifiManager.subscribeTo = subcribe;
+    Serial.println("Setting up callback...");
     wifiManager.client -> setCallback(callback);
+    Serial.println("Subscribing to topics...");
+    subcribe();
     
 }
 

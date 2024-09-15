@@ -15,21 +15,20 @@ const char* topics_to_sub[] = {
 
 
 // input pins
-const int p_temperature = 32;
-// p_sda is one of the pins used by the AHT10 sensor to gather temperature and humidity data
+// p_scl is one of the pins used by the AHT10 sensor to gather temperature and humidity data
 const int p_scl = 22;
 const int p_pH = 33;
 const int p_ec = 35;
 // idem for p_sda for p_scl
 const int p_sda = 21;
-const int p_floater = 23;
+const int p_floater = 34;
 const int p_reset = 0;
 
 // output pins
 const int p_lights = 2;
 const int p_acid = 19;
 const int p_base = 26;
-const int p_water = 34;
+const int p_water = 23;
 const int p_nutes = 18;
 
 

@@ -8,7 +8,6 @@ const char* all_topics[TOPIC_COUNT] = {
     "actuators/pumps/ph_up",
     "actuators/pumps/water",
     "actuators/pumps/nutrient",
-    "sensors/temperature",
     "sensors/ph",
     "sensors/ec",
     "sensors/humidity",
