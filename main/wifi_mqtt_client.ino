@@ -36,11 +36,11 @@ void callback(char *topic, byte *payload, unsigned int length) {
             break;
         }
         case TOPIC_LIGHT_ON: {
-            digitalWrite(p_light, HIGH);
+            digitalWrite(p_lights, HIGH);
             break;
         }
         case TOPIC_LIGHT_OFF: {
-            digitalWrite(p_light, LOW);
+            digitalWrite(p_lights, LOW);
             break;
         }
         default: {}
