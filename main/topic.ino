@@ -29,6 +29,8 @@ std::map<Topic, Status> topic_map = {
     {TOPIC_HUMIDITY, ON},
     {TOPIC_ROOM_TEMPERATURE, ON},
     {TOPIC_FLOATER, ON},
+    {TOPIC_ENABLE, ON},
+    {TOPIC_DISABLE, ON},
     {TOPIC_COUNT, OFF} // to ignore invalid ones
 };
 
@@ -55,6 +57,10 @@ void update_topic_status(String topic, bool status) {
     Topic topic_enum = from(topic.c_str());
     if (topic_enum == TOPIC_COUNT) {
         Serial.println("Invalid topic");
+        return;
+    }
+    if (topic_enum == TOPIC_ENABLE || topic_enum == TOPIC_DISABLE) {
+        Serial.println("Cannot enable or disable the enable or disable topic");
         return;
     }
     Serial.print("Updating topic: ");
