@@ -10,7 +10,9 @@ const char* topics_to_sub[] = {
   "actuators/pumps/ph_down",
   "actuators/pumps/ph_up",
   "actuators/pumps/water",
-  "actuators/pumps/nutrient"
+  "actuators/pumps/nutrient",
+  "sensors/enable",
+  "sensors/disable"
 };
 
 
@@ -22,7 +24,7 @@ const int p_ec = 35;
 // idem for p_sda for p_scl
 const int p_sda = 21;
 const int p_floater = 34;
-const int p_reset = 0;
+const int p_reset = 14;
 
 // output pins
 const int p_lights = 2;

@@ -22,16 +22,33 @@ void setup() {
 }
 
 void analog_read() {
-  float pH = ph4502c_helper.read_ph_level();
-  wifi_mqtt_client.publish(getTopicString(TOPIC_PH), pH);
-  float room_temperature = aht10_helper.read_temperature();
-  wifi_mqtt_client.publish(getTopicString(TOPIC_ROOM_TEMPERATURE), room_temperature);
-  float ec = tds_helper.analog_read(room_temperature);
-  wifi_mqtt_client.publish(getTopicString(TOPIC_EC), ec);
-  float humidity = aht10_helper.read_humidity();
-  wifi_mqtt_client.publish(getTopicString(TOPIC_HUMIDITY), humidity);
-  int floater = digitalRead(p_floater);
-  wifi_mqtt_client.publish(getTopicString(TOPIC_FLOATER), floater);
+  if (isTopicEnabled(TOPIC_PH)) {
+    float pH = ph4502c_helper.read_ph_level();
+    wifi_mqtt_client.publish(getTopicString(TOPIC_PH), pH);
+  }
+
+  if (isTopicEnabled(TOPIC_ROOM_TEMPERATURE)) {
+    float room_temperature = aht10_helper.read_temperature();
+    wifi_mqtt_client.publish(getTopicString(TOPIC_ROOM_TEMPERATURE), room_temperature);
+
+    if (isTopicEnabled(TOPIC_EC)) {
+      float ec = tds_helper.analog_read(room_temperature);
+      wifi_mqtt_client.publish(getTopicString(TOPIC_EC), ec);
+    }
+  } else if (isTopicEnabled(TOPIC_EC)) {
+    float ec = tds_helper.analog_read(23);
+    wifi_mqtt_client.publish(getTopicString(TOPIC_EC), ec);
+  }
+
+  if (isTopicEnabled(TOPIC_HUMIDITY)) {
+    float humidity = aht10_helper.read_humidity();
+    wifi_mqtt_client.publish(getTopicString(TOPIC_HUMIDITY), humidity);
+  }
+  
+  if (isTopicEnabled(TOPIC_FLOATER)) {
+    int floater = digitalRead(p_floater);
+    wifi_mqtt_client.publish(getTopicString(TOPIC_FLOATER), floater);
+  }
 }
 
 void loop() {

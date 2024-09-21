@@ -204,7 +204,6 @@ void WiFiMQTTManager::_setupSpiffs() {
 
 void WiFiMQTTManager::_checkButton() {
   if (digitalRead(_resetPin) == LOW) {
-    // TOOD validar uso de reset
     delay(50);
     if (digitalRead(_resetPin) == LOW) {
       Serial.println("WMM: button Pressed...");

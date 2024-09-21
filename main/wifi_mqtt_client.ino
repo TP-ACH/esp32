@@ -4,22 +4,29 @@ void callback(char *topic, byte *payload, unsigned int length) {
     Serial.print("Message arrived in topic: ");
     Serial.println(topic);
     Serial.print("Message: ");
+    String message;
     for (int i = 0; i < length; i++) {
         Serial.print((char)payload[i]);
+        message += (char)payload[i];
     }
     Serial.println();
     Serial.println("--------");
 
+    if (!isTopicEnabled(from(topic))) {
+        Serial.println("Topic is disabled");
+        return;
+    }
+
     switch (from(topic)) {
         case TOPIC_WATER: {
             digitalWrite(p_water, HIGH);
-            delay(3000);
+            delay(200);
             digitalWrite(p_water, LOW);
             break;
         }
         case TOPIC_NUTES: {
             digitalWrite(p_nutes, HIGH);
-            delay(3000);
+            delay(200);
             digitalWrite(p_nutes, LOW);
             break;
         }
@@ -41,6 +48,14 @@ void callback(char *topic, byte *payload, unsigned int length) {
         }
         case TOPIC_LIGHT_OFF: {
             digitalWrite(p_lights, LOW);
+            break;
+        }
+        case TOPIC_ENABLE: {
+            update_topic_status(message, true);
+            break;
+        }
+        case TOPIC_DISABLE: {
+            update_topic_status(message, false);
             break;
         }
         default: {}
@@ -77,6 +92,7 @@ void WiFiAndMQTTClient::setup() {
     subcribe();
     
 }
+
 
 void WiFiAndMQTTClient::loop() {
     (*wmm).loop();

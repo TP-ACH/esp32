@@ -12,7 +12,24 @@ const char* all_topics[TOPIC_COUNT] = {
     "sensors/ec",
     "sensors/humidity",
     "sensors/room_temperature",
-    "sensors/floater"
+    "sensors/floater",
+    "sensors/enable",
+    "sensors/disable"
+};
+
+std::map<Topic, Status> topic_map = {
+    {TOPIC_LIGHT_ON, ON},
+    {TOPIC_LIGHT_OFF, ON},
+    {TOPIC_ACID, ON},
+    {TOPIC_BASE, ON},
+    {TOPIC_WATER, ON},
+    {TOPIC_NUTES, ON},
+    {TOPIC_PH, ON},
+    {TOPIC_EC, ON},
+    {TOPIC_HUMIDITY, ON},
+    {TOPIC_ROOM_TEMPERATURE, ON},
+    {TOPIC_FLOATER, ON},
+    {TOPIC_COUNT, OFF} // to ignore invalid ones
 };
 
 const char* getTopicString(Topic topic) {
@@ -31,4 +48,22 @@ Topic from(const char* topic) {
         }
     }
     return TOPIC_COUNT; // never gets here
+}
+
+void update_topic_status(String topic, bool status) {
+    Serial.print("Validating topic: ");
+    Topic topic_enum = from(topic.c_str());
+    if (topic_enum == TOPIC_COUNT) {
+        Serial.println("Invalid topic");
+        return;
+    }
+    Serial.print("Updating topic: ");
+    Serial.println(topic);
+    Serial.print("Status: ");
+    Serial.println(status);
+    topic_map[topic_enum] = status ? ON : OFF;
+}
+
+bool isTopicEnabled(Topic topic) {
+    return topic_map[topic] == ON;
 }
