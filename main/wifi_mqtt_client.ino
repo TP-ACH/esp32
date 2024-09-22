@@ -4,6 +4,7 @@ void callback(char *topic, byte *payload, unsigned int length) {
     Serial.print("Message arrived in topic: ");
     Serial.println(topic);
     Serial.print("Message: ");
+    // message should be in the format "topic;client_id" for enable/disable topics and "client_id" for the rest
     String message;
     for (int i = 0; i < length; i++) {
         Serial.print((char)payload[i]);
