@@ -16,6 +16,17 @@ void callback(char *topic, byte *payload, unsigned int length) {
         Serial.println("Topic is disabled");
         return;
     }
+    String topic_to_modify;
+    if (from(topic) == TOPIC_ENABLE || from(topic) == TOPIC_DISABLE) {
+        int delimiterIndex = message.indexOf(";");
+        topic_to_modify = message.substring(0, delimiterIndex);
+        message = message.substring(delimiterIndex + 1);
+    }
+
+    if (message != client_id) {
+        Serial.println("Message is not for this device");
+        return;
+    }
 
     switch (from(topic)) {
         case TOPIC_WATER: {
@@ -51,11 +62,11 @@ void callback(char *topic, byte *payload, unsigned int length) {
             break;
         }
         case TOPIC_ENABLE: {
-            update_topic_status(message, true);
+            update_topic_status(topic_to_modify, true);
             break;
         }
         case TOPIC_DISABLE: {
-            update_topic_status(message, false);
+            update_topic_status(topic_to_modify, false);
             break;
         }
         default: {}
