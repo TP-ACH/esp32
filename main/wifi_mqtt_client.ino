@@ -1,5 +1,7 @@
 #include "wifi_mqtt_client.h"
 
+char device_id[40];
+
 void callback(char *topic, byte *payload, unsigned int length) {
     Serial.print("Message arrived in topic: ");
     Serial.println(topic);
@@ -24,7 +26,7 @@ void callback(char *topic, byte *payload, unsigned int length) {
         message = message.substring(delimiterIndex + 1);
     }
 
-    if (message != client_id) {
+    if (message != device_id) {
         Serial.println("Message is not for this device");
         return;
     }
@@ -96,6 +98,7 @@ void WiFiAndMQTTClient::setup() {
     // Attempt to connect to WiFi
     wifiManager.setup();
     client_id = wifiManager.clientId;
+    strcpy(device_id, wifiManager.clientId);
     Serial.println("Setting up MQTT client...");
     wifiManager.subscribeTo = subcribe;
     Serial.println("Setting up callback...");
