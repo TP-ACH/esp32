@@ -2,6 +2,8 @@
 #define TOPIC_H
 
 #include <string.h>
+#include <map>
+
 
 // topic_enum
 enum Topic {
@@ -16,11 +18,22 @@ enum Topic {
     TOPIC_HUMIDITY,
     TOPIC_ROOM_TEMPERATURE,
     TOPIC_FLOATER,
+    TOPIC_ENABLE,
+    TOPIC_DISABLE,
     TOPIC_COUNT // This will be the number of topics
+};
+
+enum Status {
+    ON,
+    OFF
 };
 
 const char* getTopicString(Topic topic);
 
 Topic from(const char* topic);
+
+void update_topic_status(String topic, bool status);
+
+bool isTopicEnabled(Topic topic);
 
 #endif
