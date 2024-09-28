@@ -20,7 +20,7 @@ const char* topics_to_sub[] = {
 // p_scl is one of the pins used by the AHT10 sensor to gather temperature and humidity data
 const int p_scl = 22;
 const int p_pH = 33;
-const int p_ec = 35;
+const int p_ec = 34;
 // idem for p_sda for p_scl
 const int p_sda = 21;
 const int p_floater = 34;
