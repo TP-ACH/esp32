@@ -2,32 +2,31 @@
 
 char device_id[40];
 
-void callback(char *topic, byte *payload, unsigned int length) {
+void callback(char *topic_recieved, byte *payload, unsigned int length) {
     Serial.print("Message arrived in topic: ");
-    Serial.println(topic);
+    Serial.println(topic_recieved);
     Serial.print("Message: ");
-    // message should be in the format "topic;client_id" for enable/disable topics and "client_id" for the rest
+    // message should be in the format "client_id" for enable/disable topics and i dont read the rest
     String message;
     for (int i = 0; i < length; i++) {
         Serial.print((char)payload[i]);
         message += (char)payload[i];
     }
+ 
     Serial.println();
     Serial.println("--------");
+    int delimiterIndex = String(topic_recieved).indexOf("/");
+    String topic_device_id = String(topic_recieved).substring(0, delimiterIndex);
+
+    const char *topic = String(topic_recieved).substring(delimiterIndex + 1).c_str();
+
+    if (topic_device_id != device_id) {
+        Serial.println("Message is not for this device");
+        return;
+    }
 
     if (!isTopicEnabled(from(topic))) {
         Serial.println("Topic is disabled");
-        return;
-    }
-    String topic_to_modify;
-    if (from(topic) == TOPIC_ENABLE || from(topic) == TOPIC_DISABLE) {
-        int delimiterIndex = message.indexOf(";");
-        topic_to_modify = message.substring(0, delimiterIndex);
-        message = message.substring(delimiterIndex + 1);
-    }
-
-    if (message != device_id) {
-        Serial.println("Message is not for this device");
         return;
     }
 
@@ -65,11 +64,11 @@ void callback(char *topic, byte *payload, unsigned int length) {
             break;
         }
         case TOPIC_ENABLE: {
-            update_topic_status(topic_to_modify, true);
+            update_topic_status(message, true);
             break;
         }
         case TOPIC_DISABLE: {
-            update_topic_status(topic_to_modify, false);
+            update_topic_status(message, false);
             break;
         }
         default: {}
@@ -85,8 +84,10 @@ WiFiMQTTManager wifiManager(p_reset, ap_password);
 void subcribe() {
     for (int i = 0; i < sizeof(topics_to_sub)/sizeof(topics_to_sub[0]); i++) {
         Serial.print("Subscribing to topic: ");
-        Serial.println(topics_to_sub[i]);
-        wifiManager.client->subscribe(topics_to_sub[i]);
+        char topic[100];
+        snprintf(topic, 100, "%s/%s", device_id, topics_to_sub[i]);
+        Serial.println(topic);
+        wifiManager.client->subscribe(topic);
     }
 }
 
@@ -115,10 +116,12 @@ void WiFiAndMQTTClient::loop() {
 
 void WiFiAndMQTTClient::publish(const char* topic, float value) {
     char msg[200];
-    snprintf(msg, 200, "{\n\"device_id\": \"%s\", \n\"reading\": \"%f\"\n}", client_id.c_str(), value);
-    char print_msg[100];
-    snprintf(print_msg, 100, "--- publishing message in topic %s ---", topic);
+    snprintf(msg, 200, "{\n\"reading\": \"%f\"\n}", value);
+    char topic_with_device_id[100];
+    snprintf(topic_with_device_id, 100, "%s/%s", device_id, topic);
+    char print_msg[400];
+    snprintf(print_msg, 100, "--- publishing message in topic %s ---", topic_with_device_id);
     Serial.println(print_msg);
     Serial.println(msg);
-    (*wmm).client->publish(topic, msg, 1);
+    (*wmm).client->publish(topic_with_device_id, msg, 1);
 }
