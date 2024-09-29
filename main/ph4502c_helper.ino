@@ -19,7 +19,8 @@ float pH4502cHelper::read_ph_level() {
 
     reading /= this->_reading_count;
     reading = (PH4502C_VOLTAGE / this->_adc_resolution) * reading;
+    this-> last_voltage = reading;
     reading = this->_calibration + reading * this->_slope;
-
+    this->last_reading = reading;
     return reading;
 }
