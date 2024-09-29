@@ -2,10 +2,10 @@
 #define PH4502C_HELPER_H
 
 /// Default calibration value for the PH4502C sensor B parameter using linear regression.
-#define PH4502C_DEFAULT_CALIBRATION 11.03474f
+#define PH4502C_DEFAULT_CALIBRATION 10.24352f
 
 /// Slope for the calibration of the PH4502C sensor using linear regression.
-#define PH4502C_SLOPE -2.58618f
+#define PH4502C_SLOPE -1.68912f
 
 /// Default reading interval (in milliseconds) between pH readings.
 #define PH4502C_DEFAULT_READING_INTERVAL 100
