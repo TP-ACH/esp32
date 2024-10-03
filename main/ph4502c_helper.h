@@ -2,10 +2,10 @@
 #define PH4502C_HELPER_H
 
 /// Default calibration value for the PH4502C sensor B parameter using linear regression.
-#define PH4502C_DEFAULT_CALIBRATION 21.37f
+#define PH4502C_DEFAULT_CALIBRATION 10.24352f
 
 /// Slope for the calibration of the PH4502C sensor using linear regression.
-#define PH4502C_SLOPE -7.249f
+#define PH4502C_SLOPE -1.68912f
 
 /// Default reading interval (in milliseconds) between pH readings.
 #define PH4502C_DEFAULT_READING_INTERVAL 100
@@ -38,6 +38,8 @@ public:
 
     float read_ph_level();
 
+    float get_last_voltage_reading() { return this->last_voltage; }
+
 private:
     int _ph_level_pin;           ///< The analog pin connected to the pH level sensor.
     int _reading_interval;           ///< The interval between pH readings in milliseconds.
@@ -45,6 +47,8 @@ private:
     float _calibration;             ///< The pH calibration value.
     float _adc_resolution;          ///< The ADC resolution for analog-to-digital conversion.
     float _slope;                   ///< The slope for the calibration of the pH sensor.
+    float last_reading;             ///< The last pH reading.
+    float last_voltage;             ///< The last voltage reading.
 };
 
 #endif

@@ -25,6 +25,9 @@ void analog_read() {
   if (isTopicEnabled(TOPIC_PH)) {
     float pH = ph4502c_helper.read_ph_level();
     wifi_mqtt_client.publish(getTopicString(TOPIC_PH), pH);
+
+    float ph_voltage = ph4502c_helper.get_last_voltage_reading();
+    wifi_mqtt_client.publish(getTopicString(TOPIC_PH_VOLTAGE), ph_voltage);
   }
 
   if (isTopicEnabled(TOPIC_ROOM_TEMPERATURE)) {
