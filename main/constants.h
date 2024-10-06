@@ -27,7 +27,7 @@ const int p_floater = 34;
 const int p_reset = 14;
 
 // output pins
-const int p_lights = 2;
+const int p_lights = 4;
 const int p_acid = 19;
 const int p_base = 26;
 const int p_water = 23;
