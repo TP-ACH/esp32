@@ -203,12 +203,12 @@ void WiFiMQTTManager::_setupSpiffs() {
 }
 
 void WiFiMQTTManager::_checkButton() {
-  if (digitalRead(_resetPin) == LOW) {
+  if (digitalRead(_resetPin) == HIGH) {
     delay(50);
-    if (digitalRead(_resetPin) == LOW) {
+    if (digitalRead(_resetPin) == HIGH) {
       Serial.println("WMM: button Pressed...");
       delay(3000); 
-      if (digitalRead(_resetPin) == LOW) {
+      if (digitalRead(_resetPin) == HIGH) {
         Serial.println("WMM: button held...");
         Serial.println("WMM: erasing config, restarting...");
         wm -> resetSettings();

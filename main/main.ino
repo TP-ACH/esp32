@@ -1,5 +1,6 @@
 #include "cleverleafy.h"
 
+
 WiFiAndMQTTClient wifi_mqtt_client;
 GravityTDS tds;
 TDSHelper tds_helper(&tds);
@@ -13,12 +14,16 @@ unsigned long last_publish_time = 0;
 void setup() {
   Serial.begin(115200);  // Initialize serial communication
   wifi_mqtt_client.setup();
-  delay(1000);
+  Serial.println("wifi and mqtt setup done");
+  yield();
+  delay(2000); 
   input_pins();
   output_pins();
+  Serial.println("pins setup done");
   tds_helper.setup_tds();
   aht10_helper.setup_aht10(p_sda, p_scl);
   ph4502c_helper.init(p_pH);
+  Serial.println("setup done");
 }
 
 void analog_read() {
@@ -55,7 +60,7 @@ void analog_read() {
 }
 
 void loop() {
+  delay(3000); 
   wifi_mqtt_client.loop();
   analog_read();
-  delay(1000);
 }

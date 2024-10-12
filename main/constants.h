@@ -23,19 +23,19 @@ const int p_pH = 33;
 const int p_ec = 34;
 // idem for p_sda for p_scl
 const int p_sda = 21;
-const int p_floater = 34;
+const int p_floater = 35;
 const int p_reset = 14;
 
 // output pins
 const int p_lights = 4;
-const int p_acid = 19;
-const int p_base = 26;
-const int p_water = 23;
-const int p_nutes = 18;
+const int p_acid = 18;
+const int p_base = 16;
+const int p_water = 17;
+const int p_nutes = 19;
 
 
 // Other constants
-const char* ap_password = "password123";
+const char* ap_password = "cleverleafy";
 const char* mqtt_username = "test";
 const char* mqtt_password = "test";
 

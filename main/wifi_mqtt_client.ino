@@ -33,25 +33,25 @@ void callback(char *topic_recieved, byte *payload, unsigned int length) {
     switch (from(topic)) {
         case TOPIC_WATER: {
             digitalWrite(p_water, HIGH);
-            delay(200);
+            delay(2000);
             digitalWrite(p_water, LOW);
             break;
         }
         case TOPIC_NUTES: {
             digitalWrite(p_nutes, HIGH);
-            delay(200);
+            delay(2000);
             digitalWrite(p_nutes, LOW);
             break;
         }
         case TOPIC_ACID: {
             digitalWrite(p_acid, HIGH);
-            delay(200);
+            delay(2000);
             digitalWrite(p_acid, LOW);
             break;
         }
         case TOPIC_BASE: {
             digitalWrite(p_base, HIGH);
-            delay(200);
+            delay(2000);
             digitalWrite(p_base, LOW);
             break;
         }

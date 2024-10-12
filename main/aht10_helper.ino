@@ -23,7 +23,5 @@ float AHT10Helper::read_temperature() {
 }
 
 float AHT10Helper::read_humidity() {
-    //measurement with high frequency leads to heating of the sensor
-    delay(2000);
     return (*aht10).readHumidity();
 }
