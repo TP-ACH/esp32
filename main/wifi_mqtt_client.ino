@@ -1,5 +1,17 @@
 #include "wifi_mqtt_client.h"
 
+
+struct DeviceState {
+    bool isOn;
+    unsigned long startTime;
+    unsigned long duration;
+};
+
+DeviceState waterPump = {false, 0, 10000};  // 10 seconds for water
+DeviceState nutesPump = {false, 0, 6000};   // 6 seconds for nutrients
+DeviceState acidPump = {false, 0, 15000};   // 15 seconds for acid
+DeviceState basePump = {false, 0, 15000};   // 15 seconds for base
+
 char device_id[40];
 
 void callback(char *topic_recieved, byte *payload, unsigned int length) {
@@ -31,28 +43,28 @@ void callback(char *topic_recieved, byte *payload, unsigned int length) {
     }
 
     switch (from(topic)) {
-        case TOPIC_WATER: {
+         case TOPIC_WATER: {
             digitalWrite(p_water, HIGH);
-            delay(2000);
-            digitalWrite(p_water, LOW);
+            waterPump.isOn = true;
+            waterPump.startTime = millis();
             break;
         }
         case TOPIC_NUTES: {
             digitalWrite(p_nutes, HIGH);
-            delay(2000);
-            digitalWrite(p_nutes, LOW);
+            nutesPump.isOn = true;
+            nutesPump.startTime = millis();
             break;
         }
         case TOPIC_ACID: {
             digitalWrite(p_acid, HIGH);
-            delay(2000);
-            digitalWrite(p_acid, LOW);
+            acidPump.isOn = true;
+            acidPump.startTime = millis();
             break;
         }
         case TOPIC_BASE: {
             digitalWrite(p_base, HIGH);
-            delay(2000);
-            digitalWrite(p_base, LOW);
+            basePump.isOn = true;
+            basePump.startTime = millis();
             break;
         }
         case TOPIC_LIGHT_ON: {
@@ -110,7 +122,33 @@ void WiFiAndMQTTClient::setup() {
 }
 
 
+void loop_callback() {
+     unsigned long currentMillis = millis();
+
+    if (waterPump.isOn && currentMillis - waterPump.startTime >= waterPump.duration) {
+        digitalWrite(p_water, LOW);
+        waterPump.isOn = false;
+    }
+
+    if (nutesPump.isOn && currentMillis - nutesPump.startTime >= nutesPump.duration) {
+        digitalWrite(p_nutes, LOW);
+        nutesPump.isOn = false;
+    }
+
+    if (acidPump.isOn && currentMillis - acidPump.startTime >= acidPump.duration) {
+        digitalWrite(p_acid, LOW);
+        acidPump.isOn = false;
+    }
+
+    if (basePump.isOn && currentMillis - basePump.startTime >= basePump.duration) {
+        digitalWrite(p_base, LOW);
+        basePump.isOn = false;
+    }
+}
+
+
 void WiFiAndMQTTClient::loop() {
+    loop_callback();
     (*wmm).loop();
 }
 
