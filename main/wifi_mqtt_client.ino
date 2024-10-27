@@ -99,7 +99,7 @@ void subcribe() {
         char topic[100];
         snprintf(topic, 100, "%s/%s", device_id, topics_to_sub[i]);
         Serial.println(topic);
-        wifiManager.client->subscribe(topic);
+        wifiManager.client->subscribe(topic, 1);
     }
 }
 
@@ -161,5 +161,5 @@ void WiFiAndMQTTClient::publish(const char* topic, float value) {
     snprintf(print_msg, 100, "--- publishing message in topic %s ---", topic_with_device_id);
     Serial.println(print_msg);
     Serial.println(msg);
-    (*wmm).client->publish(topic_with_device_id, msg, 1);
+    (*wmm).client->publish(MQTT::Publish(topic_with_device_id, msg).set_qos(1));
 }
