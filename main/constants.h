@@ -36,8 +36,8 @@ const int p_nutes = 19;
 
 // Other constants
 const char* ap_password = "cleverleafy";
-const char* mqtt_username = "test";
-const char* mqtt_password = "test";
+const char* mqtt_username = "arduino";
+const char* mqtt_password = "arduino";
 
 
 #endif // CONSTANTS_H
