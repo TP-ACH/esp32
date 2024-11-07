@@ -7,10 +7,10 @@ struct DeviceState {
     unsigned long duration;
 };
 
-DeviceState waterPump = {false, 0, 10000};  // 10 seconds for water
-DeviceState nutesPump = {false, 0, 6000};   // 6 seconds for nutrients
-DeviceState acidPump = {false, 0, 15000};   // 15 seconds for acid
-DeviceState basePump = {false, 0, 15000};   // 15 seconds for base
+DeviceState waterPump = {false, 0, 4000};  // 4 seconds for water
+DeviceState nutesPump = {false, 0, 4000};   // 4 seconds for nutrients
+DeviceState acidPump = {false, 0, 4000};   // 4 seconds for acid
+DeviceState basePump = {false, 0, 4000};   // 4 seconds for base
 
 char device_id[40];
 
@@ -161,5 +161,5 @@ void WiFiAndMQTTClient::publish(const char* topic, float value) {
     snprintf(print_msg, 100, "--- publishing message in topic %s ---", topic_with_device_id);
     Serial.println(print_msg);
     Serial.println(msg);
-    (*wmm).client->publish(MQTT::Publish(topic_with_device_id, msg).set_qos(1));
+    (*wmm).client->publish(topic_with_device_id, msg);
 }

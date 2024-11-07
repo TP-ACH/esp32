@@ -35,9 +35,9 @@ void analog_read() {
     wifi_mqtt_client.publish(getTopicString(TOPIC_PH_VOLTAGE), ph_voltage);
   }
 
-  if (isTopicEnabled(TOPIC_ROOM_TEMPERATURE)) {
+  if (isTopicEnabled(TOPIC_TEMPERATURE)) {
     float room_temperature = aht10_helper.read_temperature();
-    wifi_mqtt_client.publish(getTopicString(TOPIC_ROOM_TEMPERATURE), room_temperature);
+    wifi_mqtt_client.publish(getTopicString(TOPIC_TEMPERATURE), room_temperature);
 
     if (isTopicEnabled(TOPIC_EC)) {
       float ec = tds_helper.analog_read(room_temperature);

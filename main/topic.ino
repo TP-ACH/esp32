@@ -12,7 +12,7 @@ const char* all_topics[TOPIC_COUNT] = {
     "sensors/ph_voltage",
     "sensors/ec",
     "sensors/humidity",
-    "sensors/room_temperature",
+    "sensors/temperature",
     "sensors/floater",
     "sensors/enable",
     "sensors/disable"
@@ -29,7 +29,7 @@ std::map<Topic, Status> topic_map = {
     {TOPIC_PH_VOLTAGE, ON},
     {TOPIC_EC, ON},
     {TOPIC_HUMIDITY, ON},
-    {TOPIC_ROOM_TEMPERATURE, ON},
+    {TOPIC_TEMPERATURE, ON},
     {TOPIC_FLOATER, ON},
     {TOPIC_ENABLE, ON},
     {TOPIC_DISABLE, ON},
