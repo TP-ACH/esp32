@@ -41,7 +41,7 @@ GravityTDS::GravityTDS()
     this->aref = 3.3;
     this->adcRange = 4096.0;
     this->kValueAddress = 8;
-    this->kValue = 1.7;
+    this->kValue = 1.45;
 }
 
 GravityTDS::~GravityTDS()
